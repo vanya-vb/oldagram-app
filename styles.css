@@ -12,6 +12,10 @@ body {
     font-size: 12px;
 }
 
+a {
+    cursor: pointer;
+}
+
 .wrapper {
     max-width: 375px;
     margin: 0 auto;
