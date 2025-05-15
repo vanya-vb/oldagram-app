@@ -79,8 +79,12 @@ a {
     margin-bottom: 5px;
 }
 
-.icon {
-    max-width: 25px;
+i {
+    font-size: 23px;
+}
+
+i:hover {
+    color: silver;
 }
 
 .likes {

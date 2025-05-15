@@ -3,10 +3,10 @@ import { posts } from './index.js'
 const postsContainer = document.querySelector('.posts');
 
 function getPostsHtml() {
-    let postHtml = '';
+    let postHtml = [];
 
     posts.forEach(post =>
-        postHtml += `<article class="post">
+        postHtml.push(`<article class="post">
                 <header class="post-header">
                     <a href="#"><img class="avatar" src="${post.avatar}" alt=""></a>
                     <div class="user-info">
@@ -16,14 +16,18 @@ function getPostsHtml() {
                 </header>
 
                 <div class="img-container">
-                    <img class="img" src="${post.post}" alt="">
+                    <img class="img" src="${post.post}" data-like="${post.id}" alt="post image">
                 </div>
 
                 <footer class="post-footer">
                     <div class="icons-container">
-                        <img class="icon" clas src="images/icon-heart.png" alt="heart icon for likes">
-                        <img class="icon" clas src="images/icon-comment.png" alt="icon for comment">
-                        <img class="icon" clas src="images/icon-dm.png" alt="icon for share">
+                        <i 
+                        class="${post.isLiked ? 'fa-solid' : 'fa-regular'} fa-heart heart" 
+                        data-like="${post.id}" 
+                        style="color: ${post.isLiked ? 'red' : ''}">
+                        </i>
+                        <i class="fa-regular fa-comment"></i>
+                        <i class="fa-regular fa-share-from-square"></i>
                     </div>
 
                     <p class="likes"><span class="bold">${post.likes} likes</span></p>
@@ -31,13 +35,35 @@ function getPostsHtml() {
                     <p class="caption"></p>${post.comment}</p>
                 </footer>
             </article>`
+        )
     )
 
-    return postHtml;
+    return postHtml.join("");
 }
 
 function render() {
-    postsContainer.innerHTML = getPostsHtml()
+    postsContainer.innerHTML = getPostsHtml();
 }
 
 render()
+
+
+postsContainer.addEventListener('click', (e) => {
+    if (e.target.matches('.img') || e.target.matches('.heart')) {
+        like(e.target.dataset.like, e.target);
+    }
+})
+
+function like(id, heartIcon) {
+    const likeTarget = posts.filter(post => post.id === id)[0];
+
+    if (likeTarget.isLiked) {
+        likeTarget.isLiked = false;
+        likeTarget.likes--;
+    } else {
+        likeTarget.isLiked = true;
+        likeTarget.likes++;
+    }
+
+    render()
+}
